@@ -1,35 +1,41 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
-  fetchAllProducts,
-  fetchProductsByFilter,
-  fetchProductsBySort,
+  fetchProductsByFilters,
+  fetchCategories,
+  fetchProductById,
 } from "./productApi.js";
 
 const initialState = {
   products: [],
+  category: [],
+  totalItems: 0,
+  selectedProduct: null,
   status: "idle",
 };
 
-export const fetchAllProductsAsync = createAsyncThunk(
-  "product/fetchAllProducts",
+export const fetchProductsByFiltersAsync = createAsyncThunk(
+  "product/fetchProductsByFilters",
+  async ({ filter, sort, pagination }) => {
+    const response = await fetchProductsByFilters(filter, sort, pagination);
+    console.log(response.data);
+    return response.data;
+  }
+);
+
+export const fetchCategoriesAsync = createAsyncThunk(
+  "product/fetchCategories",
   async () => {
-    const response = await fetchAllProducts();
+    const response = await fetchCategories();
+    // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
 
-export const fetchProductsByFilterAsync = createAsyncThunk(
-  "product/fetchProductsByFilter",
-  async (filter) => {
-    const response = await fetchProductsByFilter(filter);
-    return response.data;
-  }
-);
-
-export const fetchProductsBySortAsync = createAsyncThunk(
-  "product/fetchProductsBySort",
-  async (sort) => {
-    const response = await fetchProductsBySort(sort);
+export const fetchAllProductByIdAsync = createAsyncThunk(
+  "product/fetchProductById",
+  async (id) => {
+    const response = await fetchProductById(id);
+    // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
@@ -40,26 +46,27 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllProductsAsync.pending, (state, action) => {
+      .addCase(fetchProductsByFiltersAsync.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
+      .addCase(fetchProductsByFiltersAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.products = action.payload;
+        state.products = action.payload.products;
+        state.totalItems = action.payload.totalItems;
       })
-      .addCase(fetchProductsByFilterAsync.pending, (state, action) => {
+      .addCase(fetchCategoriesAsync.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(fetchProductsByFilterAsync.fulfilled, (state, action) => {
+      .addCase(fetchCategoriesAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.products = action.payload;
+        state.category = action.payload;
       })
-      .addCase(fetchProductsBySortAsync.pending, (state, action) => {
+      .addCase(fetchAllProductByIdAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchProductsBySortAsync.fulfilled, (state, action) => {
+      .addCase(fetchAllProductByIdAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.products = action.payload;
+        state.selectedProduct = action.payload;
       });
   },
 });

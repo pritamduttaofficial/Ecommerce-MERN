@@ -13,44 +13,17 @@ import {
 } from "@heroicons/react/20/solid";
 import { StarIcon } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
-  fetchAllProductsAsync,
-  fetchProductsByFilterAsync,
-  fetchProductsBySortAsync,
+  fetchProductsByFiltersAsync,
+  fetchCategoriesAsync,
 } from "../../features/products/productSlice";
+import { ITEMS_PER_PAGE } from "../../app/constants";
 
 const sortOptions = [
   { name: "Best Rating", sort: "rating", order: "desc", current: false },
   { name: "Price: Low to High", sort: "price", order: "asc", current: false },
   { name: "Price: High to Low", sort: "price", order: "desc", current: false },
-];
-
-const filters = [
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      { value: "smartphones", label: "Smartphones", checked: false },
-      { value: "laptops", label: "Laptops", checked: false },
-      { value: "fragrances", label: "Fragrances", checked: false },
-      { value: "skincare", label: "Skincare", checked: false },
-      { value: "groceries", label: "Groceries", checked: false },
-      { value: "home decoration", label: "Home Decoration", checked: false },
-      { value: "furniture", label: "Furniture", checked: false },
-      { value: "womens dresses", label: "Womens Dresses", checked: false },
-      { value: "womens shoes", label: "Womens Shoes", checked: false },
-      { value: "mens shirts", label: "Mens Shirts", checked: false },
-      { value: "mens shoes", label: "Mens Shoes", checked: false },
-      { value: "mens watches", label: "Mens Watches", checked: false },
-      { value: "womens watches", label: "Womens Watches", checked: false },
-      { value: "womens bags", label: "Womens Bags", checked: false },
-      { value: "womens jewellery", label: "Womens Jewellery", checked: false },
-      { value: "sunglasses", label: "Sunglasses", checked: false },
-      { value: "automotive", label: "Automotive", checked: false },
-      { value: "motorcycle", label: "Motorcycle", checked: false },
-      { value: "lighting", label: "Lighting", checked: false },
-    ],
-  },
 ];
 
 function classNames(...classes) {
@@ -60,13 +33,22 @@ function classNames(...classes) {
 export default function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
+  const category = useSelector((state) => state.product.category);
+  // const totalItems = useSelector((state) => state.product.totalItems);
+  const totalItems = 100;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState({});
+  const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    dispatch(fetchProductsByFilterAsync(filter));
-  }, [dispatch, filter]);
+  const filters = [
+    {
+      id: "category",
+      name: "Category",
+      options: category,
+    },
+  ];
 
   // filter handling method
   const handleFilter = (e, section, option) => {
@@ -90,10 +72,28 @@ export default function ProductList() {
   };
 
   // sort handling method
-  const handleSort = (e, option) => {
+  const handleSort = (option) => {
     const newSort = { _sort: option.sort, _order: option.order };
     setSort(newSort);
   };
+
+  const handlePage = (page) => {
+    console.log({ page });
+    setPage(page);
+  };
+
+  useEffect(() => {
+    const pagination = { _page: page, _limit: ITEMS_PER_PAGE };
+    dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }));
+  }, [dispatch, filter, sort, page]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [totalItems, sort]);
+
+  useEffect(() => {
+    dispatch(fetchCategoriesAsync());
+  }, []);
 
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   return (
@@ -370,7 +370,7 @@ export default function ProductList() {
                           key={product.id}
                           className="group relative border-solid border-2 p-2 rounded-md shadow-lg bg-gray-200"
                         >
-                          <Link to="/product">
+                          <Link to={`/product/${product.id}`}>
                             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                               <img
                                 src={product.thumbnail}
@@ -421,25 +421,33 @@ export default function ProductList() {
         {/* Pagination */}
         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
           <div className="flex flex-1 justify-between sm:hidden">
-            <a
-              href="#"
+            <div
+              onClick={(e) => handlePage(page > 1 ? page - 1 : page)}
               className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               Previous
-            </a>
-            <a
-              href="#"
+            </div>
+            <div
+              onClick={(e) => handlePage(page < totalPages ? page + 1 : page)}
               className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
             >
               Next
-            </a>
+            </div>
           </div>
           <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
             <div>
               <p className="text-sm text-gray-700">
-                Showing <span className="font-medium">1</span> to{" "}
-                <span className="font-medium">15</span> of{" "}
-                <span className="font-medium">100</span> results
+                Showing{" "}
+                <span className="font-medium">
+                  {(page - 1) * ITEMS_PER_PAGE + 1}
+                </span>{" "}
+                to{" "}
+                <span className="font-medium">
+                  {page * ITEMS_PER_PAGE > totalItems
+                    ? totalItems
+                    : page * ITEMS_PER_PAGE}
+                </span>{" "}
+                of <span className="font-medium">{totalItems}</span> results
               </p>
             </div>
             <div>
@@ -447,44 +455,39 @@ export default function ProductList() {
                 className="isolate inline-flex -space-x-px rounded-md shadow-sm"
                 aria-label="Pagination"
               >
-                <a
-                  href="#"
+                <div
+                  onClick={(e) => handlePage(page > 1 ? page - 1 : page)}
                   className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                 >
                   <span className="sr-only">Previous</span>
                   <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-                </a>
-                {/* Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" */}
-                <a
-                  href="#"
-                  aria-current="page"
-                  className="relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  1
-                </a>
-                <a
-                  href="#"
-                  className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                >
-                  2
-                </a>
-                <a
-                  href="#"
-                  className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-                >
-                  3
-                </a>
-                <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
-                  ...
-                </span>
+                </div>
 
-                <a
-                  href="#"
+                {Array.from({
+                  length: Math.ceil(totalItems / ITEMS_PER_PAGE),
+                }).map((el, index) => (
+                  <div
+                    onClick={(e) => handlePage(index + 1)}
+                    aria-current="page"
+                    className={`relative cursor-pointer z-10 inline-flex items-center ${
+                      index + 1 === page
+                        ? "bg-indigo-600 text-white"
+                        : "text-gray-400"
+                    } px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                  >
+                    {index + 1}
+                  </div>
+                ))}
+
+                <div
+                  onClick={(e) =>
+                    handlePage(page < totalPages ? page + 1 : page)
+                  }
                   className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                 >
                   <span className="sr-only">Next</span>
                   <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-                </a>
+                </div>
               </nav>
             </div>
           </div>
