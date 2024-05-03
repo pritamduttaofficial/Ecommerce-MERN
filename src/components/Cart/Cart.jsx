@@ -186,12 +186,14 @@ export default function Cart() {
               </div>
             </div>
             <div className="space-y-4 text-center px-4 pb-4">
-              <button
-                type="button"
-                className="w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-              >
-                Checkout
-              </button>
+              <Link to="/checkout">
+                <button
+                  type="button"
+                  className="w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                >
+                  Checkout
+                </button>
+              </Link>
               <Link
                 to="/"
                 className="inline-block text-sm text-gray-600 transition hover:text-gray-700 hover:underline hover:underline-offset-4"

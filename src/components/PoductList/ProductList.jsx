@@ -1,6 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 import {
   ChevronDownIcon,
   FunnelIcon,
@@ -10,49 +11,44 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/20/solid";
+import { StarIcon } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchAllProductsAsync,
+  fetchProductsByFilterAsync,
+  fetchProductsBySortAsync,
+} from "../../features/products/productSlice";
 
 const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Best Rating", sort: "rating", order: "desc", current: false },
+  { name: "Price: Low to High", sort: "price", order: "asc", current: false },
+  { name: "Price: High to Low", sort: "price", order: "desc", current: false },
 ];
 
 const filters = [
   {
-    id: "color",
-    name: "Color",
-    options: [
-      { value: "white", label: "White", checked: false },
-      { value: "beige", label: "Beige", checked: false },
-      { value: "blue", label: "Blue", checked: true },
-      { value: "brown", label: "Brown", checked: false },
-      { value: "green", label: "Green", checked: false },
-      { value: "purple", label: "Purple", checked: false },
-    ],
-  },
-  {
     id: "category",
     name: "Category",
     options: [
-      { value: "new-arrivals", label: "New Arrivals", checked: false },
-      { value: "sale", label: "Sale", checked: false },
-      { value: "travel", label: "Travel", checked: true },
-      { value: "organization", label: "Organization", checked: false },
-      { value: "accessories", label: "Accessories", checked: false },
-    ],
-  },
-  {
-    id: "size",
-    name: "Size",
-    options: [
-      { value: "2l", label: "2L", checked: false },
-      { value: "6l", label: "6L", checked: false },
-      { value: "12l", label: "12L", checked: false },
-      { value: "18l", label: "18L", checked: false },
-      { value: "20l", label: "20L", checked: false },
-      { value: "40l", label: "40L", checked: true },
+      { value: "smartphones", label: "Smartphones", checked: false },
+      { value: "laptops", label: "Laptops", checked: false },
+      { value: "fragrances", label: "Fragrances", checked: false },
+      { value: "skincare", label: "Skincare", checked: false },
+      { value: "groceries", label: "Groceries", checked: false },
+      { value: "home decoration", label: "Home Decoration", checked: false },
+      { value: "furniture", label: "Furniture", checked: false },
+      { value: "womens dresses", label: "Womens Dresses", checked: false },
+      { value: "womens shoes", label: "Womens Shoes", checked: false },
+      { value: "mens shirts", label: "Mens Shirts", checked: false },
+      { value: "mens shoes", label: "Mens Shoes", checked: false },
+      { value: "mens watches", label: "Mens Watches", checked: false },
+      { value: "womens watches", label: "Womens Watches", checked: false },
+      { value: "womens bags", label: "Womens Bags", checked: false },
+      { value: "womens jewellery", label: "Womens Jewellery", checked: false },
+      { value: "sunglasses", label: "Sunglasses", checked: false },
+      { value: "automotive", label: "Automotive", checked: false },
+      { value: "motorcycle", label: "Motorcycle", checked: false },
+      { value: "lighting", label: "Lighting", checked: false },
     ],
   },
 ];
@@ -61,41 +57,44 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const products = [
-  {
-    id: 1,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "$35",
-    color: "Black",
-  },
-  {
-    id: 2,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "$35",
-    color: "Black",
-  },
-  {
-    id: 3,
-    name: "Basic Tee",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: "$35",
-    color: "Black",
-  },
-  // More products...
-];
-
 export default function ProductList() {
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.product.products);
+
+  const [filter, setFilter] = useState({});
+  const [sort, setSort] = useState({});
+
+  useEffect(() => {
+    dispatch(fetchProductsByFilterAsync(filter));
+  }, [dispatch, filter]);
+
+  // filter handling method
+  const handleFilter = (e, section, option) => {
+    console.log(e.target.checked);
+    const newFilter = { ...filter };
+    if (e.target.checked) {
+      if (newFilter[section.id]) {
+        newFilter[section.id].push(option.value);
+      } else {
+        newFilter[section.id] = [option.value];
+      }
+    } else {
+      const index = newFilter[section.id].findIndex(
+        (el) => el === option.value
+      );
+      newFilter[section.id].splice(index, 1);
+    }
+    console.log({ newFilter });
+
+    setFilter(newFilter);
+  };
+
+  // sort handling method
+  const handleSort = (e, option) => {
+    const newSort = { _sort: option.sort, _order: option.order };
+    setSort(newSort);
+  };
+
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   return (
     <div className="bg-white">
@@ -188,6 +187,9 @@ export default function ProductList() {
                                       name={`${section.id}[]`}
                                       defaultValue={option.value}
                                       type="checkbox"
+                                      onClick={(e) =>
+                                        handleFilter(e, section, option)
+                                      }
                                       defaultChecked={option.checked}
                                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
@@ -244,8 +246,8 @@ export default function ProductList() {
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
                           {({ active }) => (
-                            <a
-                              href={option.href}
+                            <p
+                              onClick={(e) => handleSort(e, option)}
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -255,7 +257,7 @@ export default function ProductList() {
                               )}
                             >
                               {option.name}
-                            </a>
+                            </p>
                           )}
                         </Menu.Item>
                       ))}
@@ -332,6 +334,9 @@ export default function ProductList() {
                                   name={`${section.id}[]`}
                                   defaultValue={option.value}
                                   type="checkbox"
+                                  onClick={(e) =>
+                                    handleFilter(e, section, option)
+                                  }
                                   defaultChecked={option.checked}
                                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                 />
@@ -361,33 +366,48 @@ export default function ProductList() {
 
                     <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                       {products.map((product) => (
-                        <div key={product.id} className="group relative">
-                          <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                            <img
-                              src={product.imageSrc}
-                              alt={product.imageAlt}
-                              className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                            />
-                          </div>
-                          <div className="mt-4 flex justify-between">
-                            <div>
-                              <h3 className="text-sm text-gray-700">
-                                <a href={product.href}>
-                                  <span
-                                    aria-hidden="true"
-                                    className="absolute inset-0"
-                                  />
-                                  {product.name}
-                                </a>
-                              </h3>
-                              <p className="mt-1 text-sm text-gray-500">
-                                {product.color}
-                              </p>
+                        <div
+                          key={product.id}
+                          className="group relative border-solid border-2 p-2 rounded-md shadow-lg bg-gray-200"
+                        >
+                          <Link to="/product">
+                            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                              <img
+                                src={product.thumbnail}
+                                alt={product.title}
+                                className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                              />
                             </div>
-                            <p className="text-sm font-medium text-gray-900">
-                              {product.price}
-                            </p>
-                          </div>
+                            <div className="mt-4 flex justify-between">
+                              <div>
+                                <h3 className="text-sm text-gray-700">
+                                  <a href={product.thumbnail}>
+                                    <span
+                                      aria-hidden="true"
+                                      className="absolute inset-0"
+                                    />
+                                    {product.title}
+                                  </a>
+                                </h3>
+                                <p className="mt-1 text-sm flex items-center text-gray-500">
+                                  {product.rating}
+                                  <StarIcon className="w-4 h-4 ml-1 inline" />
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-900">
+                                  ₹
+                                  {Math.round(
+                                    product.price *
+                                      (1 - product.discountPercentage / 100)
+                                  )}
+                                </p>
+                                <p className="text-sm line-through font-medium text-gray-400">
+                                  ₹{product.price}
+                                </p>
+                              </div>
+                            </div>
+                          </Link>
                         </div>
                       ))}
                     </div>
@@ -398,6 +418,7 @@ export default function ProductList() {
             </div>
           </section>
         </main>
+        {/* Pagination */}
         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
           <div className="flex flex-1 justify-between sm:hidden">
             <a
@@ -417,8 +438,8 @@ export default function ProductList() {
             <div>
               <p className="text-sm text-gray-700">
                 Showing <span className="font-medium">1</span> to{" "}
-                <span className="font-medium">10</span> of{" "}
-                <span className="font-medium">97</span> results
+                <span className="font-medium">15</span> of{" "}
+                <span className="font-medium">100</span> results
               </p>
             </div>
             <div>
@@ -456,24 +477,7 @@ export default function ProductList() {
                 <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">
                   ...
                 </span>
-                <a
-                  href="#"
-                  className="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex"
-                >
-                  8
-                </a>
-                <a
-                  href="#"
-                  className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                >
-                  9
-                </a>
-                <a
-                  href="#"
-                  className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                >
-                  10
-                </a>
+
                 <a
                   href="#"
                   className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
