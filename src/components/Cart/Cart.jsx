@@ -1,47 +1,52 @@
 import { Heart, Trash } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-const products = [
-  {
-    id: 1,
-    name: "Nike Air Force 1 07 LV8",
-    href: "#",
-    price: "₹47,199",
-    originalPrice: "₹48,900",
-    discount: "5% Off",
-    color: "Orange",
-    size: "8 UK",
-    imageSrc:
-      "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/54a510de-a406-41b2-8d62-7f8c587c9a7e/air-force-1-07-lv8-shoes-9KwrSk.png",
-  },
-  {
-    id: 2,
-    name: "Nike Blazer Low 77 SE",
-    href: "#",
-    price: "₹1,549",
-    originalPrice: "₹2,499",
-    discount: "38% off",
-    color: "White",
-    leadTime: "3-4 weeks",
-    size: "8 UK",
-    imageSrc:
-      "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/e48d6035-bd8a-4747-9fa1-04ea596bb074/blazer-low-77-se-shoes-0w2HHV.png",
-  },
-  {
-    id: 3,
-    name: "Nike Air Max 90",
-    href: "#",
-    price: "₹2219 ",
-    originalPrice: "₹999",
-    discount: "78% off",
-    color: "Black",
-    imageSrc:
-      "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/fd17b420-b388-4c8a-aaaa-e0a98ddf175f/dunk-high-retro-shoe-DdRmMZ.png",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { StarIcon } from "lucide-react";
+import { updateCartAsync } from "../../features/cart/cartSlice";
 
 export default function Cart() {
+  const dispatch = useDispatch();
+
+  const [quantity, setQuantity] = useState(1);
+  const items = useSelector((state) => state.cart.items);
+
+  const totalAmountBeforeDiscount = items.reduce(
+    (amount, item) => item.price * item.quantity + amount,
+    0
+  );
+  const totalDiscount = items.reduce(
+    (amount, item) => item.discountPercentage * item.quantity + amount,
+    0
+  );
+  const totalAmountAfterDiscount = Math.round(
+    totalAmountBeforeDiscount * (1 - totalDiscount / 100)
+  );
+
+  const totalItemsInCart = items.reduce(
+    (total, item) => item.quantity + total,
+    0
+  );
+
+  const handleQuantityIncrement = (e, product) => {
+    if (quantity < 9) {
+      setQuantity(quantity + 1);
+    }
+    console.log(quantity);
+    dispatch(updateCartAsync({ ...product, quantity }));
+  };
+
+  const handleQuantityDecrement = (e, product) => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+    dispatch(updateCartAsync({ ...product, quantity: +quantity }));
+  };
+
+  // const handleRemove = (e, id) => {
+  //   dispatch(deleteItemFromCartAsync(id));
+  // };
+
   return (
     <div className="mx-auto max-w-7xl px-2 lg:px-0">
       <div className="mx-auto max-w-2xl py-3 lg:max-w-7xl">
@@ -57,14 +62,14 @@ export default function Cart() {
               Items in your shopping cart
             </h2>
             <ul role="list" className="divide-y divide-gray-200">
-              {products.map((product, productIdx) => (
+              {items.map((product, productIdx) => (
                 <div key={product.id} className="">
                   <li className="flex py-6 px-6 sm:py-6 ">
                     <div className="flex-shrink-0">
                       <img
-                        src={product.imageSrc}
-                        alt={product.name}
-                        className="sm:h-38 sm:w-38 h-24 w-24 rounded-md object-contain object-center"
+                        src={product.thumbnail}
+                        alt={product.title}
+                        className="sm:h-38 sm:w-38 h-24 w-24 rounded-md object-cover object-center"
                       />
                     </div>
 
@@ -75,32 +80,36 @@ export default function Cart() {
                             <h3 className="text-sm">
                               <a
                                 href={product.href}
-                                className="font-semibold text-black"
+                                className="font-bold text-gray-600"
                               >
-                                {product.name}
+                                {product.title}
                               </a>
                             </h3>
                           </div>
                           <div className="mt-1 flex text-sm">
-                            <p className="text-sm text-gray-500">
-                              {product.color}
+                            <p className="text-sm font-normal text-gray-600">
+                              {product.brand}
                             </p>
-                            {product.size ? (
-                              <p className="ml-4 border-l border-gray-200 pl-4 text-sm text-gray-500">
-                                {product.size}
-                              </p>
-                            ) : null}
+
+                            <p className="ml-4 border-l flex items-center border-gray-200 pl-4 text-sm font-normal text-black">
+                              {product.rating}
+                              <StarIcon className="w-4 h-4 ml-1 text-yellow-400 inline" />
+                            </p>
                           </div>
                           <div className="mt-1 flex items-end">
-                            <p className="text-xs font-medium text-gray-500 line-through">
-                              {product.originalPrice}
+                            <p className="text-sm font-medium text-gray-500 line-through">
+                              ₹{product.price}
                             </p>
                             <p className="text-sm font-medium text-gray-900">
-                              &nbsp;&nbsp;{product.price}
+                              &nbsp;&nbsp; ₹
+                              {Math.round(
+                                product.price *
+                                  (1 - product.discountPercentage / 100)
+                              )}
                             </p>
                             &nbsp;&nbsp;
                             <p className="text-sm font-medium text-green-500">
-                              {product.discount}
+                              {product.discountPercentage}% off
                             </p>
                           </div>
                         </div>
@@ -109,17 +118,22 @@ export default function Cart() {
                   </li>
                   <div className="mb-2 pb-2 px-6 flex">
                     <div className="min-w-24 flex">
-                      <button type="button" className="h-7 w-7">
+                      <button
+                        type="button"
+                        className="h-7 w-7"
+                        onClick={() => handleQuantityDecrement(product)}
+                      >
                         -
                       </button>
                       <input
                         type="text"
                         className="mx-1 h-7 w-9 rounded-md border text-center"
-                        defaultValue={1}
+                        value={quantity}
                       />
                       <button
                         type="button"
                         className="flex h-7 w-7 items-center justify-center"
+                        onClick={() => handleQuantityIncrement(product)}
                       >
                         +
                       </button>
@@ -155,15 +169,19 @@ export default function Cart() {
             <div>
               <dl className=" space-y-1 px-4 py-4">
                 <div className="flex items-center justify-between">
-                  <dt className="text-sm text-gray-800">Price (3 item)</dt>
-                  <dd className="text-sm font-medium text-black">₹ 52,398</dd>
+                  <dt className="text-sm text-gray-800">
+                    Price ({totalItemsInCart} item)
+                  </dt>
+                  <dd className="text-sm font-medium text-black">
+                    ₹ {totalAmountBeforeDiscount}
+                  </dd>
                 </div>
                 <div className="flex items-center justify-between pt-4">
                   <dt className="flex items-center text-sm text-black">
                     <span>Discount</span>
                   </dt>
                   <dd className="text-sm font-medium text-green-700">
-                    - ₹ 3,431
+                    - ₹ {totalAmountBeforeDiscount - totalAmountAfterDiscount}
                   </dd>
                 </div>
                 <div className="flex items-center justify-between py-4">
@@ -177,12 +195,14 @@ export default function Cart() {
                     Total Amount
                   </dt>
                   <dd className="text-base font-medium text-gray-900">
-                    ₹ 48,967
+                    ₹ {totalAmountAfterDiscount}
                   </dd>
                 </div>
               </dl>
               <div className="px-4 pb-4 font-medium text-green-700">
-                You will save ₹ 3,431 on this order
+                You will save ₹{" "}
+                {totalAmountBeforeDiscount - totalAmountAfterDiscount} on this
+                order
               </div>
             </div>
             <div className="space-y-4 text-center px-4 pb-4">

@@ -5,6 +5,7 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const user = {
@@ -21,9 +22,9 @@ const navigation = [
   { name: "Reports", to: "#", current: false },
 ];
 const userNavigation = [
-  { name: "Your Profile", to: "#" },
-  { name: "Settings", to: "#" },
-  { name: "Logout", to: "#" },
+  { name: "Your Profile", link: "/" },
+  { name: "Settings", link: "/" },
+  { name: "Logout", link: "/login" },
 ];
 
 function classNames(...classes) {
@@ -31,6 +32,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar({ children }) {
+  const items = useSelector((state) => state.cart.items);
   return (
     <>
       <div className="min-h-full">
@@ -83,10 +85,11 @@ export default function Navbar({ children }) {
                           />
                         </button>
                       </Link>
-                      <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium mb-7 -ml-1 text-green-700 ring-1 ring-inset ring-green-600/20">
-                        3
-                      </span>
-
+                      {items.length > 0 && (
+                        <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium mb-7 -ml-1 text-green-700 ring-1 ring-inset ring-green-600/20">
+                          {items.length}
+                        </span>
+                      )}
                       {/* Profile dropdown */}
                       <Menu as="div" className="relative ml-3">
                         <div>
@@ -114,7 +117,7 @@ export default function Navbar({ children }) {
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
                                   <Link
-                                    to={item.to}
+                                    to={item.link}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
                                       "block px-4 py-2 text-sm text-gray-700"
@@ -208,7 +211,7 @@ export default function Navbar({ children }) {
                       <Disclosure.Button
                         key={item.name}
                         as="a"
-                        href={item.to}
+                        to={item.link}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                       >
                         {item.name}
