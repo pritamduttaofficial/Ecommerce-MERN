@@ -1,15 +1,15 @@
 import "./App.css";
+import { useEffect } from "react";
 import Home from "./pages/Home";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
-import store from "./app/store";
 import { useDispatch, useSelector } from "react-redux";
 import Protected from "../src/components/Protected/Protected";
+import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 
 const router = createBrowserRouter([
   {
@@ -55,20 +55,18 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  // const dispatch = useDispatch();
-  // const user = useSelector((state) => state.auth.loggedInUser);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.loggedInUser);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     dispatch(fetchItemsByUserIdAsync(user.id));
-  //   }
-  // }, [dispatch, user]);
+  useEffect(() => {
+    if (user) {
+      dispatch(fetchItemsByUserIdAsync(user.id));
+    }
+  }, [dispatch, user]);
 
   return (
     <>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+      <RouterProvider router={router} />
     </>
   );
 }

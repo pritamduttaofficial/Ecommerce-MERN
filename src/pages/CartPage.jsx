@@ -5,7 +5,9 @@ import Navbar from "../components/Navbar/Navbar";
 function CartPage() {
   return (
     <div>
-      <Cart />
+      <Navbar>
+        <Cart></Cart>
+      </Navbar>
     </div>
   );
 }
