@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteItemFromCartAsync } from "../features/cart/cartSlice";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { updateUserAsync } from "../features/auth/authSlice";
+import { createOrderAsync } from "../features/order/orderSlice";
 
 export default function CheckoutPage() {
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
+  const user = useSelector((state) => state.auth.loggedInUser);
+  const orderPlaced = useSelector((state) => state.order.orderPlaced);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const totalAmountBeforeDiscount = items.reduce(
     (amount, item) => item.price * item.quantity + amount,
@@ -24,12 +36,40 @@ export default function CheckoutPage() {
 
   const totalAmountAfterDiscount = totalAmountBeforeDiscount - totalDiscount;
 
+  const totalItemsInCart = items.reduce(
+    (total, item) => item.quantity + total,
+    0
+  );
+
   const handleRemove = (id) => {
     dispatch(deleteItemFromCartAsync(id));
   };
+
+  const handleAddress = (e) => {
+    console.log(e.target.value);
+    setSelectedAddress(user.addresses[e.target.value]);
+  };
+
+  const handleOrder = (e) => {
+    if (selectedAddress) {
+      const order = {
+        items,
+        totalAmountAfterDiscount,
+        totalItemsInCart,
+        user,
+        selectedAddress,
+        status: "pending",
+      };
+      dispatch(createOrderAsync(order));
+    } else {
+      alert("Select an address or add a new one");
+    }
+  };
+
   return (
     <>
       {!items.length && <Navigate to="/" replace={true}></Navigate>}
+      {orderPlaced && <Navigate to="/order-success" replace={true}></Navigate>}
       <div className="mx-auto my-4 max-w-4xl md:my-6">
         <div className="overflow-hidden  rounded-xl shadow">
           <div className="grid grid-cols-1 md:grid-cols-2">
@@ -38,7 +78,20 @@ export default function CheckoutPage() {
               <div className="flow-root">
                 <div className="-my-6 divide-y divide-gray-200">
                   <div className="py-6">
-                    <form>
+                    <form
+                      noValidate
+                      onSubmit={handleSubmit((data) => {
+                        console.log(data);
+                        dispatch(
+                          updateUserAsync({
+                            ...user,
+                            addresses: [...user.addresses, data],
+                          })
+                        );
+                        reset();
+                      })}
+                    >
+                      {/* *********************** Contact Info ************************/}
                       <div className="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
                         <div>
                           <h3
@@ -56,14 +109,213 @@ export default function CheckoutPage() {
                               Full Name
                             </label>
                             <input
-                              className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                              className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                               type="text"
+                              {...register("name", {
+                                required: "name is required",
+                              })}
                               placeholder="Enter your name"
                               id="name"
                             ></input>
+                            {errors.name && (
+                              <p className="text-red-500">
+                                {errors.name.message}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="mt-4 w-full">
+                            <label
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              htmlFor="phone"
+                            >
+                              Phone number
+                            </label>
+                            <input
+                              className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                              type="text"
+                              {...register("phone", {
+                                required: "phone number is required",
+                              })}
+                              placeholder="Phone number"
+                              id="phone"
+                            ></input>
+                            {errors.phone && (
+                              <p className="text-red-500">
+                                {errors.phone.message}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <hr className="my-8" />
+
+                        {/* *********************** Add New Address ********************* */}
+                        <div className="mt-10">
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            Shipping address
+                          </h3>
+
+                          <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
+                            <div className="sm:col-span-3">
+                              <label
+                                htmlFor="address"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                Address
+                              </label>
+                              <div className="mt-1">
+                                <input
+                                  type="text"
+                                  {...register("address", {
+                                    required: "Address is required",
+                                  })}
+                                  id="address"
+                                  name="address"
+                                  placeholder="House No., Building Name, Road, Area"
+                                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                                />
+                                {errors.address && (
+                                  <p className="text-red-500">
+                                    {errors.address.message}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="city"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                City
+                              </label>
+                              <div className="mt-1">
+                                <input
+                                  type="text"
+                                  id="city"
+                                  name="city"
+                                  {...register("city", {
+                                    required: "city is required",
+                                  })}
+                                  placeholder="City"
+                                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                                />
+                                {errors.city && (
+                                  <p className="text-red-500">
+                                    {errors.city.message}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="state"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                State / Province
+                              </label>
+                              <div className="mt-1">
+                                <input
+                                  type="text"
+                                  id="state"
+                                  name="state"
+                                  {...register("state", {
+                                    required: "state is required",
+                                  })}
+                                  placeholder="State"
+                                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                                />
+                                {errors.state && (
+                                  <p className="text-red-500">
+                                    {errors.state.message}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="pincode"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                Pincode
+                              </label>
+                              <div className="mt-1">
+                                <input
+                                  type="text"
+                                  id="pincode"
+                                  name="pincode"
+                                  a
+                                  {...register("pincode", {
+                                    required: "pincode is required",
+                                  })}
+                                  placeholder="Pincode"
+                                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                                />
+                                {errors.pincode && (
+                                  <p className="text-red-500">
+                                    {errors.pincode.message}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-2 flex justify-end pt-6">
+                          <button
+                            type="submit"
+                            className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                          >
+                            Add Address
+                          </button>
+                        </div>
+                        <hr className="my-8" />
+
+                        {/* *********************** Addresses ************************* */}
+                        <div className="mt-10">
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            Addresses
+                          </h3>
+                          <div className="mt-6 w-full">
+                            <p className="block text-sm font-medium text-gray-700">
+                              Choose from Existing addresses
+                            </p>
+                            <ul role="list">
+                              {user.addresses.map((address, index) => (
+                                <li
+                                  key={index}
+                                  className="flex justify-between mt-1 gap-x-6 px-5 py-2 w-full rounded-md border border-black/30 bg-transparent"
+                                >
+                                  <div className="flex gap-x-4">
+                                    <input
+                                      onChange={handleAddress}
+                                      name="address"
+                                      type="radio"
+                                      value={index}
+                                      className="h-4 w-4 mt-1 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                    />
+                                    <div className="min-w-0 flex-auto">
+                                      <p className="text-sm font-semibold leading-6 text-gray-900">
+                                        {address.name}
+                                      </p>
+                                      <p className="mt-0 truncate text-xs leading-5 text-gray-500">
+                                        {address.address}
+                                      </p>
+                                      <p className="mt-0 truncate text-xs leading-5 text-gray-500">
+                                        {address.pincode}
+                                      </p>
+                                      <p className="mt-0 truncate text-xs leading-5 text-gray-500">
+                                        {address.city}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        <hr className="my-8" />
+                        {/* ********************* Payment Section ******************** */}
                         <div className="mt-10">
                           <h3 className="text-lg font-semibold text-gray-900">
                             Payment details
@@ -103,7 +355,6 @@ export default function CheckoutPage() {
                                 />
                               </div>
                             </div>
-
                             <div>
                               <label
                                 htmlFor="cvc"
@@ -123,111 +374,6 @@ export default function CheckoutPage() {
                             </div>
                           </div>
                         </div>
-                        <hr className="my-8" />
-                        <div className="mt-10">
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            Shipping address
-                          </h3>
-
-                          <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
-                            <div className="sm:col-span-3">
-                              <label
-                                htmlFor="address"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Address
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  type="text"
-                                  id="address"
-                                  name="address"
-                                  autoComplete="street-address"
-                                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                                />
-                              </div>
-                            </div>
-
-                            <div>
-                              <label
-                                htmlFor="city"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                City
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  type="text"
-                                  id="city"
-                                  name="city"
-                                  autoComplete="address-level2"
-                                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                                />
-                              </div>
-                            </div>
-
-                            <div>
-                              <label
-                                htmlFor="region"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                State / Province
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  type="text"
-                                  id="region"
-                                  name="region"
-                                  autoComplete="address-level1"
-                                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                                />
-                              </div>
-                            </div>
-
-                            <div>
-                              <label
-                                htmlFor="postal-code"
-                                className="block text-sm font-medium text-gray-700"
-                              >
-                                Postal code
-                              </label>
-                              <div className="mt-1">
-                                <input
-                                  type="text"
-                                  id="postal-code"
-                                  name="postal-code"
-                                  autoComplete="postal-code"
-                                  className="flex h-10 w-full rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <hr className="my-8" />
-                        <div className="mt-10">
-                          <h3 className="text-lg font-semibold text-gray-900">
-                            Billing information
-                          </h3>
-
-                          <div className="mt-6 flex items-center">
-                            <input
-                              id="same-as-shipping"
-                              name="same-as-shipping"
-                              type="checkbox"
-                              defaultChecked
-                              className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
-                            />
-                            <div className="ml-2">
-                              <label
-                                htmlFor="same-as-shipping"
-                                className="text-sm font-medium text-gray-900"
-                              >
-                                Same as shipping information
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-
                         <div className="mt-10 flex justify-end border-t border-gray-200 pt-6">
                           <button
                             type="button"
@@ -326,6 +472,24 @@ export default function CheckoutPage() {
                   </p>
                 </li>
               </ul>
+              <hr className="mt-6 border-gray-200" />
+              <div className="mt-6 text-center pb-4">
+                <Link to="/checkout">
+                  <button
+                    type="button"
+                    onClick={handleOrder}
+                    className="w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                  >
+                    Order Now
+                  </button>
+                </Link>
+                <Link
+                  to="/"
+                  className="inline-block text-sm mt-3 text-gray-600 transition hover:text-gray-700 hover:underline hover:underline-offset-4"
+                >
+                  Continue shopping &rarr;
+                </Link>
+              </div>
             </div>
           </div>
         </div>

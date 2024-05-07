@@ -1961,8 +1961,160 @@
       "id": "e266",
       "name": "Pritam Dutta",
       "email": "pritamdutta850@gmail.com",
-      "password": "#Pritam1999"
+      "password": "#Pritam1999",
+      "addresses": [
+        {
+          "name": "Pritam Dutta",
+          "phone": "08812025165",
+          "address": "Agriculture Campus, Khanapara, Guwahati-22",
+          "city": "Guwahati",
+          "state": "Assam",
+          "pincode": "781022"
+        },
+        {
+          "name": "Rajesh Dutta",
+          "phone": "08812025165",
+          "address": "Agriculture Campus, Khanapara, Guwahati-22",
+          "city": "Amritsar",
+          "state": "Punjab",
+          "pincode": "781022"
+        },
+        {
+          "name": "Sagar Dutta",
+          "phone": "9435409849",
+          "address": "Delhi Campus, Noida",
+          "city": "New Delhi",
+          "state": "Delhi",
+          "pincode": "781022"
+        }
+      ]
+    },
+    {
+      "id": "970c",
+      "name": "one",
+      "email": "one@one.com",
+      "password": "Pritam123",
+      "addresses": [
+        {
+          "name": "Pritam Dutta",
+          "phone": "08812025165",
+          "address": "Agriculture Campus, Khanapara, Guwahati-22",
+          "city": "Guwahati",
+          "state": "Assam",
+          "postal-code": "781022"
+        }
+      ]
     }
   ],
-  "cart": []
+  "cart": [
+    {
+      "id": "e0dd",
+      "title": "iPhone X",
+      "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+      "price": 899,
+      "discountPercentage": 17.94,
+      "rating": 4.44,
+      "stock": 34,
+      "brand": "Apple",
+      "category": "smartphones",
+      "thumbnail": "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/2/1.jpg",
+        "https://cdn.dummyjson.com/product-images/2/2.jpg",
+        "https://cdn.dummyjson.com/product-images/2/3.jpg",
+        "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg"
+      ],
+      "quantity": 1,
+      "user": "e266"
+    },
+    {
+      "id": "3467",
+      "title": "Huawei P30",
+      "description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
+      "price": 499,
+      "discountPercentage": 10.58,
+      "rating": 4.09,
+      "stock": 32,
+      "brand": "Huawei",
+      "category": "smartphones",
+      "thumbnail": "https://cdn.dummyjson.com/product-images/5/thumbnail.jpg",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/5/1.jpg",
+        "https://cdn.dummyjson.com/product-images/5/2.jpg",
+        "https://cdn.dummyjson.com/product-images/5/3.jpg"
+      ],
+      "quantity": 1,
+      "user": "970c"
+    }
+  ],
+  "orders": [
+    {
+      "id": "da3e",
+      "items": [
+        {
+          "id": "e0dd",
+          "title": "iPhone X",
+          "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+          "price": 899,
+          "discountPercentage": 17.94,
+          "rating": 4.44,
+          "stock": 34,
+          "brand": "Apple",
+          "category": "smartphones",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/2/1.jpg",
+            "https://cdn.dummyjson.com/product-images/2/2.jpg",
+            "https://cdn.dummyjson.com/product-images/2/3.jpg",
+            "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": "e266"
+        }
+      ],
+      "totalAmountAfterDiscount": 738,
+      "totalItemsInCart": 1,
+      "user": {
+        "id": "e266",
+        "name": "Pritam Dutta",
+        "email": "pritamdutta850@gmail.com",
+        "password": "#Pritam1999",
+        "addresses": [
+          {
+            "name": "Pritam Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Guwahati",
+            "state": "Assam",
+            "pincode": "781022"
+          },
+          {
+            "name": "Rajesh Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Amritsar",
+            "state": "Punjab",
+            "pincode": "781022"
+          },
+          {
+            "name": "Sagar Dutta",
+            "phone": "9435409849",
+            "address": "Delhi Campus, Noida",
+            "city": "New Delhi",
+            "state": "Delhi",
+            "pincode": "781022"
+          }
+        ]
+      },
+      "selectedAddress": {
+        "name": "Pritam Dutta",
+        "phone": "08812025165",
+        "address": "Agriculture Campus, Khanapara, Guwahati-22",
+        "city": "Guwahati",
+        "state": "Assam",
+        "pincode": "781022"
+      },
+      "status": "pending"
+    }
+  ]
 }

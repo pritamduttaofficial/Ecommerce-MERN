@@ -39,6 +39,7 @@ function Signup() {
                   name: data.name,
                   email: data.email,
                   password: data.password,
+                  addresses: [],
                 })
               );
               console.log(data);
