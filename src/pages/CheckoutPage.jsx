@@ -12,7 +12,7 @@ export default function CheckoutPage() {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
   const user = useSelector((state) => state.auth.loggedInUser);
-  const orderPlaced = useSelector((state) => state.order.orderPlaced);
+  const currentOrder = useSelector((state) => state.order.currentOrder);
   const {
     register,
     handleSubmit,
@@ -69,7 +69,7 @@ export default function CheckoutPage() {
   return (
     <>
       {!items.length && <Navigate to="/" replace={true}></Navigate>}
-      {orderPlaced && <Navigate to="/order-success" replace={true}></Navigate>}
+      {currentOrder && <Navigate to="/order-success" replace={true}></Navigate>}
       <div className="mx-auto my-4 max-w-4xl md:my-6">
         <div className="overflow-hidden  rounded-xl shadow">
           <div className="grid grid-cols-1 md:grid-cols-2">
@@ -263,7 +263,7 @@ export default function CheckoutPage() {
                         <div className="mt-2 flex justify-end pt-6">
                           <button
                             type="submit"
-                            className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                            className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-95 duration-200 focus-visible:outline-black"
                           >
                             Add Address
                           </button>
@@ -377,7 +377,7 @@ export default function CheckoutPage() {
                         <div className="mt-10 flex justify-end border-t border-gray-200 pt-6">
                           <button
                             type="button"
-                            className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                            className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-95 duration-200 focus-visible:outline-black"
                           >
                             Make payment
                           </button>
@@ -400,7 +400,7 @@ export default function CheckoutPage() {
                       <div className="flex flex-1 items-stretch">
                         <div className="flex-shrink-0">
                           <img
-                            className="h-20 w-20 rounded-lg border border-gray-200 bg-white object-cover"
+                            className="h-20 w-20 rounded-lg border border-gray-200 bg-white object-cover object-center"
                             src={product.thumbnail}
                             alt={product.title}
                           />
@@ -447,7 +447,7 @@ export default function CheckoutPage() {
                   <div className="mt-4 sm:mt-0 md:mt-4 lg:mt-0">
                     <button
                       type="button"
-                      className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                      className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:scale-95 duration-200"
                     >
                       Apply Coupon
                     </button>
@@ -478,7 +478,7 @@ export default function CheckoutPage() {
                   <button
                     type="button"
                     onClick={handleOrder}
-                    className="w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                    className="w-full rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-95 duration-200 focus-visible:outline-black"
                   >
                     Order Now
                   </button>

@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { resetCartAsync } from "../features/cart/cartSlice";
+import { resetOrder } from "../features/order/orderSlice";
 
 function OrderSuccess() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.loggedInUser);
+
+  useEffect(() => {
+    // reset cart
+    dispatch(resetCartAsync(user.id));
+    // reset currentOrder
+    dispatch(resetOrder());
+  }, [dispatch, user]);
   return (
     <div>
       <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -24,7 +36,7 @@ function OrderSuccess() {
               </Link>
               <Link
                 className="mt-8 lg:mt-0 w-full lg:w-auto lg:px-8 py-4 inline-block rounded-full bg-pink-600 text-sm font-bold text-white shadow-xl"
-                href="#"
+                to="/user-orders"
                 style={{ minWidth: "150px" }}
               >
                 Order History

@@ -2000,50 +2000,10 @@
       ]
     }
   ],
-  "cart": [
-    {
-      "id": "e0dd",
-      "title": "iPhone X",
-      "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
-      "price": 899,
-      "discountPercentage": 17.94,
-      "rating": 4.44,
-      "stock": 34,
-      "brand": "Apple",
-      "category": "smartphones",
-      "thumbnail": "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
-      "images": [
-        "https://cdn.dummyjson.com/product-images/2/1.jpg",
-        "https://cdn.dummyjson.com/product-images/2/2.jpg",
-        "https://cdn.dummyjson.com/product-images/2/3.jpg",
-        "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg"
-      ],
-      "quantity": 1,
-      "user": "e266"
-    },
-    {
-      "id": "3467",
-      "title": "Huawei P30",
-      "description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
-      "price": 499,
-      "discountPercentage": 10.58,
-      "rating": 4.09,
-      "stock": 32,
-      "brand": "Huawei",
-      "category": "smartphones",
-      "thumbnail": "https://cdn.dummyjson.com/product-images/5/thumbnail.jpg",
-      "images": [
-        "https://cdn.dummyjson.com/product-images/5/1.jpg",
-        "https://cdn.dummyjson.com/product-images/5/2.jpg",
-        "https://cdn.dummyjson.com/product-images/5/3.jpg"
-      ],
-      "quantity": 1,
-      "user": "970c"
-    }
-  ],
+  "cart": [],
   "orders": [
     {
-      "id": "da3e",
+      "id": "805f",
       "items": [
         {
           "id": "e0dd",
@@ -2071,8 +2031,8 @@
       "user": {
         "id": "e266",
         "name": "Pritam Dutta",
-        "email": "pritamdutta850@gmail.com",
-        "password": "#Pritam1999",
+        "email": "two@two.com",
+        "password": "Pritam123",
         "addresses": [
           {
             "name": "Pritam Dutta",
@@ -2107,6 +2067,377 @@
         "city": "Guwahati",
         "state": "Assam",
         "pincode": "781022"
+      },
+      "status": "pending"
+    },
+    {
+      "id": "5688",
+      "items": [
+        {
+          "id": "6949",
+          "title": "Infinix INBOOK",
+          "description": "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty",
+          "price": 1099,
+          "discountPercentage": 11.83,
+          "rating": 4.54,
+          "stock": 96,
+          "brand": "Infinix",
+          "category": "laptops",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/9/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/9/1.jpg",
+            "https://cdn.dummyjson.com/product-images/9/2.png",
+            "https://cdn.dummyjson.com/product-images/9/3.png",
+            "https://cdn.dummyjson.com/product-images/9/4.jpg",
+            "https://cdn.dummyjson.com/product-images/9/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": "e266"
+        }
+      ],
+      "totalAmountAfterDiscount": 969,
+      "totalItemsInCart": 1,
+      "user": {
+        "id": "e266",
+        "name": "Pritam Dutta",
+        "email": "two@two.com",
+        "password": "Pritam123",
+        "addresses": [
+          {
+            "name": "Pritam Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Guwahati",
+            "state": "Assam",
+            "pincode": "781022"
+          },
+          {
+            "name": "Rajesh Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Amritsar",
+            "state": "Punjab",
+            "pincode": "781022"
+          },
+          {
+            "name": "Sagar Dutta",
+            "phone": "9435409849",
+            "address": "Delhi Campus, Noida",
+            "city": "New Delhi",
+            "state": "Delhi",
+            "pincode": "781022"
+          }
+        ]
+      },
+      "selectedAddress": {
+        "name": "Rajesh Dutta",
+        "phone": "08812025165",
+        "address": "Agriculture Campus, Khanapara, Guwahati-22",
+        "city": "Amritsar",
+        "state": "Punjab",
+        "pincode": "781022"
+      },
+      "status": "pending"
+    },
+    {
+      "id": "6a16",
+      "items": [
+        {
+          "id": "1da3",
+          "title": "Brown Perfume",
+          "description": "Royal_Mirage Sport Brown Perfume for Men & Women - 120ml",
+          "price": 40,
+          "discountPercentage": 15.66,
+          "rating": 4,
+          "stock": 52,
+          "brand": "Royal_Mirage",
+          "category": "fragrances",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/12/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/12/1.jpg",
+            "https://cdn.dummyjson.com/product-images/12/2.jpg",
+            "https://cdn.dummyjson.com/product-images/12/3.png",
+            "https://cdn.dummyjson.com/product-images/12/4.jpg",
+            "https://cdn.dummyjson.com/product-images/12/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": "e266"
+        }
+      ],
+      "totalAmountAfterDiscount": 34,
+      "totalItemsInCart": 1,
+      "user": {
+        "id": "e266",
+        "name": "Pritam Dutta",
+        "email": "two@two.com",
+        "password": "Pritam123",
+        "addresses": [
+          {
+            "name": "Pritam Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Guwahati",
+            "state": "Assam",
+            "pincode": "781022"
+          },
+          {
+            "name": "Rajesh Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Amritsar",
+            "state": "Punjab",
+            "pincode": "781022"
+          },
+          {
+            "name": "Sagar Dutta",
+            "phone": "9435409849",
+            "address": "Delhi Campus, Noida",
+            "city": "New Delhi",
+            "state": "Delhi",
+            "pincode": "781022"
+          }
+        ]
+      },
+      "selectedAddress": {
+        "name": "Sagar Dutta",
+        "phone": "9435409849",
+        "address": "Delhi Campus, Noida",
+        "city": "New Delhi",
+        "state": "Delhi",
+        "pincode": "781022"
+      },
+      "status": "pending"
+    },
+    {
+      "id": "2b6d",
+      "items": [
+        {
+          "id": "93b6",
+          "title": "Round Silver Frame Sun Glasses",
+          "description": "A pair of sunglasses can protect your eyes from being hurt. For car driving, vacation travel, outdoor activities, social gatherings,",
+          "price": 19,
+          "discountPercentage": 10.1,
+          "rating": 4.94,
+          "stock": 78,
+          "brand": "Designer Sun Glasses",
+          "category": "sunglasses",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/81/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/81/1.jpg",
+            "https://cdn.dummyjson.com/product-images/81/2.jpg",
+            "https://cdn.dummyjson.com/product-images/81/3.jpg",
+            "https://cdn.dummyjson.com/product-images/81/4.webp",
+            "https://cdn.dummyjson.com/product-images/81/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": "e266"
+        },
+        {
+          "id": "1d0b",
+          "title": "Qualcomm original Car Charger",
+          "description": "best Quality CHarger , Highly Recommended to all best Quality CHarger , Highly Recommended to all",
+          "price": 40,
+          "discountPercentage": 17.53,
+          "rating": 4.2,
+          "stock": 79,
+          "brand": "TC Reusable",
+          "category": "automotive",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/89/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/89/1.jpg",
+            "https://cdn.dummyjson.com/product-images/89/2.jpg",
+            "https://cdn.dummyjson.com/product-images/89/3.jpg",
+            "https://cdn.dummyjson.com/product-images/89/4.jpg",
+            "https://cdn.dummyjson.com/product-images/89/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": "e266"
+        }
+      ],
+      "totalAmountAfterDiscount": 50,
+      "totalItemsInCart": 2,
+      "user": {
+        "id": "e266",
+        "name": "Pritam Dutta",
+        "email": "two@two.com",
+        "password": "Pritam123",
+        "addresses": [
+          {
+            "name": "Pritam Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Guwahati",
+            "state": "Assam",
+            "pincode": "781022"
+          },
+          {
+            "name": "Rajesh Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Amritsar",
+            "state": "Punjab",
+            "pincode": "781022"
+          },
+          {
+            "name": "Sagar Dutta",
+            "phone": "9435409849",
+            "address": "Delhi Campus, Noida",
+            "city": "New Delhi",
+            "state": "Delhi",
+            "pincode": "781022"
+          }
+        ]
+      },
+      "selectedAddress": {
+        "name": "Sagar Dutta",
+        "phone": "9435409849",
+        "address": "Delhi Campus, Noida",
+        "city": "New Delhi",
+        "state": "Delhi",
+        "pincode": "781022"
+      },
+      "status": "pending"
+    },
+    {
+      "id": "cf03",
+      "items": [
+        {
+          "id": "3467",
+          "title": "Huawei P30",
+          "description": "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
+          "price": 499,
+          "discountPercentage": 10.58,
+          "rating": 4.09,
+          "stock": 32,
+          "brand": "Huawei",
+          "category": "smartphones",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/5/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/5/1.jpg",
+            "https://cdn.dummyjson.com/product-images/5/2.jpg",
+            "https://cdn.dummyjson.com/product-images/5/3.jpg"
+          ],
+          "quantity": 1,
+          "user": "970c"
+        },
+        {
+          "id": "9426",
+          "title": "iPhone X",
+          "description": "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+          "price": 899,
+          "discountPercentage": 17.94,
+          "rating": 4.44,
+          "stock": 34,
+          "brand": "Apple",
+          "category": "smartphones",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/2/1.jpg",
+            "https://cdn.dummyjson.com/product-images/2/2.jpg",
+            "https://cdn.dummyjson.com/product-images/2/3.jpg",
+            "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": "970c"
+        },
+        {
+          "id": "4d56",
+          "title": "Samsung Galaxy Book",
+          "description": "Samsung Galaxy Book S (2020) Laptop With Intel Lakefield Chip, 8GB of RAM Launched",
+          "price": 1499,
+          "discountPercentage": 4.15,
+          "rating": 4.25,
+          "stock": 50,
+          "brand": "Samsung",
+          "category": "laptops",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/7/thumbnail.jpg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/7/1.jpg",
+            "https://cdn.dummyjson.com/product-images/7/2.jpg",
+            "https://cdn.dummyjson.com/product-images/7/3.jpg",
+            "https://cdn.dummyjson.com/product-images/7/thumbnail.jpg"
+          ],
+          "quantity": 1,
+          "user": "970c"
+        }
+      ],
+      "totalAmountAfterDiscount": 2621,
+      "totalItemsInCart": 3,
+      "user": {
+        "id": "970c",
+        "name": "one",
+        "email": "one@one.com",
+        "password": "Pritam123",
+        "addresses": [
+          {
+            "name": "Pritam Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Guwahati",
+            "state": "Assam",
+            "postal-code": "781022"
+          }
+        ]
+      },
+      "selectedAddress": {
+        "name": "Pritam Dutta",
+        "phone": "08812025165",
+        "address": "Agriculture Campus, Khanapara, Guwahati-22",
+        "city": "Guwahati",
+        "state": "Assam",
+        "postal-code": "781022"
+      },
+      "status": "pending"
+    },
+    {
+      "id": "ff05",
+      "items": [
+        {
+          "id": "e439",
+          "title": "HP Pavilion 15-DK1056WM",
+          "description": "HP Pavilion 15-DK1056WM Gaming Laptop 10th Gen Core i5, 8GB, 256GB SSD, GTX 1650 4GB, Windows 10",
+          "price": 1099,
+          "discountPercentage": 6.18,
+          "rating": 4.43,
+          "stock": 89,
+          "brand": "HP Pavilion",
+          "category": "laptops",
+          "thumbnail": "https://cdn.dummyjson.com/product-images/10/thumbnail.jpeg",
+          "images": [
+            "https://cdn.dummyjson.com/product-images/10/1.jpg",
+            "https://cdn.dummyjson.com/product-images/10/2.jpg",
+            "https://cdn.dummyjson.com/product-images/10/3.jpg",
+            "https://cdn.dummyjson.com/product-images/10/thumbnail.jpeg"
+          ],
+          "quantity": 1,
+          "user": "970c"
+        }
+      ],
+      "totalAmountAfterDiscount": 1031,
+      "totalItemsInCart": 1,
+      "user": {
+        "id": "970c",
+        "name": "one",
+        "email": "one@one.com",
+        "password": "Pritam123",
+        "addresses": [
+          {
+            "name": "Pritam Dutta",
+            "phone": "08812025165",
+            "address": "Agriculture Campus, Khanapara, Guwahati-22",
+            "city": "Guwahati",
+            "state": "Assam",
+            "postal-code": "781022"
+          }
+        ]
+      },
+      "selectedAddress": {
+        "name": "Pritam Dutta",
+        "phone": "08812025165",
+        "address": "Agriculture Campus, Khanapara, Guwahati-22",
+        "city": "Guwahati",
+        "state": "Assam",
+        "postal-code": "781022"
       },
       "status": "pending"
     }
