@@ -5,6 +5,7 @@ const initialState = {
   orders: [],
   status: "idle",
   currentOrder: null,
+  userOrder: null,
 };
 
 export const createOrderAsync = createAsyncThunk(
@@ -22,6 +23,9 @@ export const orderSlice = createSlice({
     resetOrder: (state) => {
       state.currentOrder = null;
     },
+    addUserCurrentOrder: (state, action) => {
+      state.userOrder = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -36,6 +40,6 @@ export const orderSlice = createSlice({
   },
 });
 
-export const { resetOrder } = orderSlice.actions;
+export const { resetOrder, addUserCurrentOrder } = orderSlice.actions;
 
 export default orderSlice.reducer;

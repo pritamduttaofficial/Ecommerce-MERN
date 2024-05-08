@@ -5,13 +5,16 @@ import { deleteItemFromCartAsync } from "../features/cart/cartSlice";
 import { Navigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { updateUserAsync } from "../features/auth/authSlice";
-import { createOrderAsync } from "../features/order/orderSlice";
+import {
+  addUserCurrentOrder,
+  createOrderAsync,
+} from "../features/order/orderSlice";
 
 export default function CheckoutPage() {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
-  const user = useSelector((state) => state.auth.loggedInUser);
+  const user = useSelector((state) => state.user.userInfo);
   const currentOrder = useSelector((state) => state.order.currentOrder);
   const {
     register,
@@ -61,6 +64,7 @@ export default function CheckoutPage() {
         status: "pending",
       };
       dispatch(createOrderAsync(order));
+      dispatch(addUserCurrentOrder(order));
     } else {
       alert("Select an address or add a new one");
     }
@@ -81,7 +85,6 @@ export default function CheckoutPage() {
                     <form
                       noValidate
                       onSubmit={handleSubmit((data) => {
-                        console.log(data);
                         dispatch(
                           updateUserAsync({
                             ...user,

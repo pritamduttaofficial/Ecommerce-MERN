@@ -36,10 +36,10 @@ function OrderSuccess() {
               </Link>
               <Link
                 className="mt-8 lg:mt-0 w-full lg:w-auto lg:px-8 py-4 inline-block rounded-full bg-pink-600 text-sm font-bold text-white shadow-xl"
-                to="/user-orders"
+                to="/order-details"
                 style={{ minWidth: "150px" }}
               >
-                Order History
+                Order Details
               </Link>
             </div>
           </div>

@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchLoggedInUserOrderAsync,
-  selectUserOrders,
-} from "../../features/user/userSlice";
-import { Link } from "react-router-dom";
+import { fetchLoggedInUserOrderAsync } from "../../features/user/userSlice";
+import { Link, Navigate } from "react-router-dom";
 
 function UserOrders() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.loggedInUser);
-  const orders = useSelector(selectUserOrders);
+  const user = useSelector((state) => state.user.userInfo);
+  const orders = useSelector((state) => state.order.orders);
 
   useEffect(() => {
     dispatch(fetchLoggedInUserOrderAsync(user.id));
   }, []);
+
   return (
     <div>
+      {!orders.length && <Navigate to="/" replace={true}></Navigate>}
       {orders.map((order) => (
         <div className="mx-auto mt-10 rounded-lg shadow-lg bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="px-4 py-6 sm:px-6">
