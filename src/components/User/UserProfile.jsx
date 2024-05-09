@@ -42,7 +42,7 @@ export default function UserProfile() {
     setValue("state", address.state);
     setValue("pinCode", address.pinCode);
     setValue("phone", address.phone);
-    setValue("street", address.street);
+    setValue("address", address.address);
   };
 
   const handleAdd = (address) => {
@@ -53,14 +53,19 @@ export default function UserProfile() {
 
   return (
     <div>
-      <div className="mx-auto mt-12 bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+      <div className="mx-auto mt-12 rounded-md shadow-lg bg-white max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="px-4 py-6 sm:px-6">
           <h1 className="text-4xl my-5 font-bold tracking-tight text-gray-900">
             Name: {user.name}
           </h1>
           <h3 className="text-xl my-5 font-bold tracking-tight text-red-900">
             email address : {user.email}
           </h3>
+          {user.role === "admin" && (
+            <h3 className="text-xl my-5 font-bold tracking-tight text-red-600">
+              Role : {user.role}
+            </h3>
+          )}
         </div>
 
         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
@@ -162,23 +167,23 @@ export default function UserProfile() {
 
                     <div className="col-span-full">
                       <label
-                        htmlFor="street-address"
+                        htmlFor="address"
                         className="block text-sm font-medium leading-6 text-gray-900"
                       >
-                        Street address
+                        address address
                       </label>
                       <div className="mt-2">
                         <input
                           type="text"
-                          {...register("street", {
-                            required: "street is required",
+                          {...register("address", {
+                            required: "address is required",
                           })}
-                          id="street"
+                          id="address"
                           className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
-                        {errors.street && (
+                        {errors.address && (
                           <p className="text-red-500">
-                            {errors.street.message}
+                            {errors.address.message}
                           </p>
                         )}
                       </div>
@@ -373,23 +378,23 @@ export default function UserProfile() {
 
                         <div className="col-span-full">
                           <label
-                            htmlFor="street-address"
+                            htmlFor="address"
                             className="block text-sm font-medium leading-6 text-gray-900"
                           >
-                            Street address
+                            Address
                           </label>
                           <div className="mt-2">
                             <input
                               type="text"
-                              {...register("street", {
-                                required: "street is required",
+                              {...register("address", {
+                                required: "address is required",
                               })}
-                              id="street"
+                              id="address"
                               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
-                            {errors.street && (
+                            {errors.address && (
                               <p className="text-red-500">
-                                {errors.street.message}
+                                {errors.address.message}
                               </p>
                             )}
                           </div>

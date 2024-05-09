@@ -10,7 +10,7 @@ export const OrderDetails = () => {
     <div className="mx-auto my-4 max-w-6xl px-2 md:my-6 md:px-0">
       <h2 className="text-3xl font-bold">Order Details</h2>
       <div className="mt-8 flex flex-col overflow-hidden rounded-lg border shadow-lg border-gray-200 md:flex-row">
-        <div className="w-full border-r border-gray-300 bg-gray-200 md:max-w-xs">
+        <div className="w-full border-r border-gray-200 bg-gray-200 md:max-w-xs">
           <div className="p-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-1">
               {[
@@ -21,7 +21,7 @@ export const OrderDetails = () => {
               ].map(([key, value]) => (
                 <div key={key} className="mb-4">
                   <div className="text-sm font-semibold">{key}</div>
-                  <div className="text-sm font-medium text-gray-700">
+                  <div className="text-sm text-blue-600 font-medium">
                     {value}
                   </div>
                 </div>
@@ -74,14 +74,14 @@ export const OrderDetails = () => {
             <div className="space-x-4">
               <button
                 type="button"
-                className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                className="rounded-md bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:scale-95 duration-200"
               >
                 View Order
               </button>
               <Link to="/user-orders">
                 <button
                   type="button"
-                  className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                  className="rounded-md bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black active:scale-95 duration-200"
                 >
                   Order History
                 </button>

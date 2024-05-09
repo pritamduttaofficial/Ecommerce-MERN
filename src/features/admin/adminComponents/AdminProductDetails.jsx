@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductByIdAsync } from "../../features/products/productSlice";
+import { fetchProductByIdAsync } from "../../products/productSlice";
 import { useParams } from "react-router-dom";
-import { addToCartAsync } from "../../features/cart/cartSlice";
+import { addToCartAsync } from "../../cart/cartSlice";
 
 const colors = [
   { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
@@ -33,7 +33,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductDetails() {
+export default function AdminProductDetails() {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
   const product = useSelector((state) => state.product.selectedProduct);
