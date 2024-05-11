@@ -6,13 +6,14 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
-  { name: "Dashboard", link: "#", current: true, access: "user" },
-  { name: "Team", link: "#", current: false, access: "user" },
-  { name: "Admin", link: "/admin", current: false, access: "admin" },
+  { name: "Products", link: "/", current: false, access: "user" },
+  { name: "Products", link: "/admin", current: false, access: "admin" },
+  { name: "Orders", link: "/admin/orders", current: false, access: "admin" },
 ];
+
 const userNavigation = [
   { name: "My Profile", link: "/user-profile" },
   { name: "My Orders", link: "/user-orders" },
@@ -26,6 +27,12 @@ function classNames(...classes) {
 export default function Navbar({ children }) {
   const user = useSelector((state) => state.auth.loggedInUser);
   const items = useSelector((state) => state.cart.items);
+  const location = useLocation();
+
+  // Update current property based on current URL
+  navigation.forEach((item) => {
+    item.current = location.pathname === item.link;
+  });
   return (
     <>
       <div className="min-h-full">

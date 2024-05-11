@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProductByIdAsync } from "../../features/products/productSlice";
 import { useParams } from "react-router-dom";
 import { addToCartAsync } from "../../features/cart/cartSlice";
+import Alert from "../AlertsAndPopups/Alert";
+import Info from "../AlertsAndPopups/Info";
 
 const colors = [
   { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
@@ -36,16 +38,29 @@ function classNames(...classes) {
 export default function ProductDetails() {
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedSize, setSelectedSize] = useState(sizes[2]);
+  const [showAlert, setShowAlert] = useState(null);
   const product = useSelector((state) => state.product.selectedProduct);
   const user = useSelector((state) => state.auth.loggedInUser);
+  const items = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const params = useParams();
 
   const handleCart = (e) => {
     e.preventDefault();
-    const newItem = { ...product, quantity: 1, user: user.id };
-    delete newItem["id"];
-    dispatch(addToCartAsync(newItem));
+    if (items.findIndex((item) => item.productId === product.id) < 0) {
+      console.log({ items, product });
+      const newItem = {
+        ...product,
+        productId: product.id,
+        quantity: 1,
+        user: user.id,
+      };
+      delete newItem["id"];
+      dispatch(addToCartAsync(newItem));
+      setShowAlert("success");
+    } else {
+      setShowAlert("info");
+    }
   };
 
   useEffect(() => {
@@ -54,6 +69,12 @@ export default function ProductDetails() {
 
   return (
     <div className="bg-white">
+      {showAlert === "success" && (
+        <Alert title="Success" description="Item Added to Cart!" />
+      )}
+      {showAlert === "info" && (
+        <Info title="Info" description="Item Already Added to Cart!" />
+      )}
       {product && (
         <div className="pt-6">
           <nav aria-label="Breadcrumb">
