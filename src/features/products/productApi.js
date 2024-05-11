@@ -23,7 +23,7 @@ export function fetchProductsByFilters(filter, sort, pagination) {
 
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:3000/products?" + queryString
+      "http://localhost:8000/products?" + queryString
     );
     const data = await response.json();
     const totalItems = response.headers.get("X-Total-Count");
@@ -33,7 +33,7 @@ export function fetchProductsByFilters(filter, sort, pagination) {
 
 export function fetchCategories() {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:3000/category");
+    const response = await fetch("http://localhost:8000/categories");
     const data = await response.json();
     resolve({ data });
   });
@@ -41,7 +41,7 @@ export function fetchCategories() {
 
 export function fetchProductById(id) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:3000/products/" + id);
+    const response = await fetch("http://localhost:8000/products/" + id);
     const data = await response.json();
     resolve({ data });
   });
@@ -49,7 +49,7 @@ export function fetchProductById(id) {
 
 export function createProduct(product) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:3000/products/", {
+    const response = await fetch("http://localhost:8000/products/", {
       method: "POST",
       body: JSON.stringify(product),
       headers: { "content-type": "application/json" },
@@ -62,7 +62,7 @@ export function createProduct(product) {
 export function updateProduct(update) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:3000/products/" + update.id,
+      "http://localhost:8000/products/" + update.id,
       {
         method: "PATCH",
         body: JSON.stringify(update),
@@ -77,7 +77,7 @@ export function updateProduct(update) {
 export function deleteProduct(productId) {
   return new Promise(async (resolve) => {
     const response = await fetch(
-      "http://localhost:3000/products/" + productId,
+      "http://localhost:8000/products/" + productId,
       {
         method: "DELETE",
         headers: { "content-type": "application/json" },

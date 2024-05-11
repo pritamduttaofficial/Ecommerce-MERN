@@ -10,7 +10,7 @@ import {
 
 const initialState = {
   products: [],
-  category: [],
+  categories: [],
   totalItems: 0,
   selectedProduct: null,
   status: "idle",
@@ -87,7 +87,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchCategoriesAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.category = action.payload;
+        state.categories = action.payload;
       })
       .addCase(fetchProductByIdAsync.pending, (state) => {
         state.status = "loading";
