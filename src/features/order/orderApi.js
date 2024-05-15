@@ -1,6 +1,6 @@
 export function createOrder(order) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:3000/orders", {
+    const response = await fetch("http://localhost:8000/orders", {
       method: "POST",
       body: JSON.stringify(order),
       headers: { "content-type": "application/json" },
@@ -10,9 +10,10 @@ export function createOrder(order) {
   });
 }
 
+// API is for admin
 export function updateOrder(order) {
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:3000/orders/" + order.id, {
+    const response = await fetch("http://localhost:8000/orders/" + order.id, {
       method: "PATCH",
       body: JSON.stringify(order),
       headers: { "content-type": "application/json" },
@@ -22,6 +23,7 @@ export function updateOrder(order) {
   });
 }
 
+// API is for admin
 export function fetchAllOrders(filter) {
   let queryString = "";
 
@@ -30,7 +32,7 @@ export function fetchAllOrders(filter) {
   }
 
   return new Promise(async (resolve) => {
-    const response = await fetch("http://localhost:3000/orders?" + queryString);
+    const response = await fetch("http://localhost:8000/orders?" + queryString);
     const data = await response.json();
     resolve({ data: { orders: data } });
   });

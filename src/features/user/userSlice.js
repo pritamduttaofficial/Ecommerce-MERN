@@ -6,7 +6,6 @@ import {
 } from "./userApi";
 
 const initialState = {
-  userOrders: [],
   status: "idle",
   userInfo: null,
 };
@@ -15,7 +14,6 @@ export const fetchLoggedInUserOrderAsync = createAsyncThunk(
   "user/fetchLoggedInUserOrders",
   async (id) => {
     const response = await fetchLoggedInUserOrders(id);
-    // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
@@ -31,8 +29,8 @@ export const fetchLoggedInUserAsync = createAsyncThunk(
 
 export const updateUserAsync = createAsyncThunk(
   "user/updateUser",
-  async (id) => {
-    const response = await updateUser(id);
+  async (update) => {
+    const response = await updateUser(update);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
@@ -49,26 +47,23 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLoggedInUserOrderAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.userOrders = action.payload;
+        state.userInfo.orders = action.payload;
       })
       .addCase(updateUserAsync.pending, (state) => {
         state.status = "loading";
       })
       .addCase(updateUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.userOrders = action.payload;
+        state.userInfo = action.payload;
       })
       .addCase(fetchLoggedInUserAsync.pending, (state) => {
         state.status = "loading";
       })
       .addCase(fetchLoggedInUserAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        // this info can be different or more from logged-in User info
         state.userInfo = action.payload;
       });
   },
 });
-
-export const selectUserOrders = (state) => state.user.userOrders;
 
 export default userSlice.reducer;

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 export const OrderDetails = () => {
   const orders = useSelector((state) => state.order.userOrder);
+  console.log(orders);
   const d = new Date();
   let text = d.toDateString();
   return (
@@ -14,7 +15,7 @@ export const OrderDetails = () => {
           <div className="p-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-1">
               {[
-                ["Order ID", "#74557994327"],
+                ["Order ID", `#${orders.user}`],
                 ["Date", `${text}`],
                 ["Total Amount", `₹${orders.totalAmountAfterDiscount}`],
                 ["Order Status", "Confirmed"],
@@ -41,18 +42,18 @@ export const OrderDetails = () => {
                     <div className="flex-shrink-0">
                       <img
                         className="h-20 w-20 rounded-lg border border-gray-200 object-cover object-center"
-                        src={order.thumbnail}
-                        alt={order.title}
+                        src={order.product.thumbnail}
+                        alt={order.product.title}
                       />
                     </div>
 
                     <div className="ml-5 flex flex-col justify-between">
                       <div className="flex-1">
                         <p className="text-sm font-bold text-gray-900">
-                          {order.title}
+                          {order.product.title}
                         </p>
                         <p className="mt-1.5 text-sm font-medium text-gray-500">
-                          {order.brand}
+                          {order.product.brand}
                         </p>
                       </div>
 
@@ -64,7 +65,7 @@ export const OrderDetails = () => {
 
                   <div className="ml-auto flex flex-col items-end justify-between">
                     <p className="text-right text-sm font-bold text-gray-900">
-                      ₹ {order.price}
+                      ₹ {order.product.price}
                     </p>
                   </div>
                 </li>

@@ -1,4 +1,4 @@
-import { Heart, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,15 +14,15 @@ export default function Cart() {
   const items = useSelector((state) => state.cart.items);
 
   const totalAmountBeforeDiscount = items.reduce(
-    (amount, item) => item.price * item.quantity + amount,
+    (amount, item) => item.product.price * item.quantity + amount,
     0
   );
 
   const totalDiscount = items.reduce((total, item) => {
     const itemActualPrice = Math.round(
-      item.price * (1 - item.discountPercentage / 100)
+      item.product.price * (1 - item.product.discountPercentage / 100)
     );
-    const discountedPrice = item.price - itemActualPrice;
+    const discountedPrice = item.product.price - itemActualPrice;
     const itemTotalDiscount = discountedPrice * item.quantity;
     return total + itemTotalDiscount;
   }, 0);
@@ -35,21 +35,21 @@ export default function Cart() {
   );
 
   // Function to update quantity for a specific product
-  const handleQuantityChange = (product, newQuantity) => {
-    dispatch(updateCartAsync({ ...product, quantity: newQuantity }));
+  const handleQuantityChange = (item, newQuantity) => {
+    dispatch(updateCartAsync({ id: item.id, quantity: newQuantity }));
   };
 
   // Function to handle incrementing quantity
-  const handleQuantityIncrement = (product) => {
-    if (product.quantity < 9) {
-      handleQuantityChange(product, product.quantity + 1);
+  const handleQuantityIncrement = (item) => {
+    if (item.quantity < 9) {
+      handleQuantityChange(item, item.quantity + 1);
     }
   };
 
   // Function to handle decrementing quantity
-  const handleQuantityDecrement = (product) => {
-    if (product.quantity > 1) {
-      handleQuantityChange(product, product.quantity - 1);
+  const handleQuantityDecrement = (item) => {
+    if (item.quantity > 1) {
+      handleQuantityChange(item, item.quantity - 1);
     }
   };
 
@@ -74,13 +74,13 @@ export default function Cart() {
                 Items in your shopping cart
               </h2>
               <ul role="list" className="divide-y divide-gray-200">
-                {items.map((product, productIdx) => (
-                  <div key={product.id} className="">
+                {items.map((item, productIdx) => (
+                  <div key={item.id} className="">
                     <li className="flex py-6 px-6 sm:py-6 ">
                       <div className="flex-shrink-0">
                         <img
-                          src={product.thumbnail}
-                          alt={product.title}
+                          src={item.product.thumbnail}
+                          alt={item.product.title}
                           className="sm:h-38 sm:w-38 h-24 w-24 rounded-md object-cover object-center"
                         />
                       </div>
@@ -91,37 +91,37 @@ export default function Cart() {
                             <div className="flex justify-between">
                               <h3 className="text-sm">
                                 <a
-                                  href={product.href}
+                                  href={item.href}
                                   className="font-bold text-gray-600"
                                 >
-                                  {product.title}
+                                  {item.product.title}
                                 </a>
                               </h3>
                             </div>
                             <div className="mt-1 flex text-sm">
                               <p className="text-sm font-normal text-gray-600">
-                                {product.brand}
+                                {item.product.brand}
                               </p>
 
                               <p className="ml-4 border-l flex items-center border-gray-200 pl-4 text-sm font-normal text-black">
-                                {product.rating}
+                                {item.product.rating}
                                 <StarIcon className="w-4 h-4 ml-1 text-yellow-400 inline" />
                               </p>
                             </div>
                             <div className="mt-1 flex items-end">
                               <p className="text-sm font-medium text-gray-500 line-through">
-                                ₹{product.price}
+                                ₹{item.product.price}
                               </p>
                               <p className="text-sm font-medium text-gray-900">
                                 &nbsp;&nbsp; ₹
                                 {Math.round(
-                                  product.price *
-                                    (1 - product.discountPercentage / 100)
+                                  item.product.price *
+                                    (1 - item.product.discountPercentage / 100)
                                 )}
                               </p>
                               &nbsp;&nbsp;
                               <p className="text-sm font-medium text-green-500">
-                                {product.discountPercentage}% off
+                                {item.product.discountPercentage}% off
                               </p>
                             </div>
                           </div>
@@ -133,19 +133,20 @@ export default function Cart() {
                         <button
                           type="button"
                           className="h-7 w-7"
-                          onClick={() => handleQuantityDecrement(product)}
+                          onClick={() => handleQuantityDecrement(item)}
                         >
                           -
                         </button>
                         <input
                           type="text"
                           className="mx-1 h-7 w-9 rounded-md border text-center"
-                          value={product.quantity}
+                          value={item.quantity}
+                          readOnly
                         />
                         <button
                           type="button"
                           className="flex h-7 w-7 items-center justify-center"
-                          onClick={() => handleQuantityIncrement(product)}
+                          onClick={() => handleQuantityIncrement(item)}
                         >
                           +
                         </button>
@@ -154,7 +155,7 @@ export default function Cart() {
                         <button
                           type="button"
                           className="flex items-center space-x-1 px-2 py-1 pl-0"
-                          onClick={() => handleRemove(product.id)}
+                          onClick={() => handleRemove(item.id)}
                         >
                           <Trash size={12} className="text-red-500" />
                           <span className="text-xs font-medium text-red-500">

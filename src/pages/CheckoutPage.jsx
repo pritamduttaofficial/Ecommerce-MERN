@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteItemFromCartAsync } from "../features/cart/cartSlice";
 import { Navigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { updateUserAsync } from "../features/auth/authSlice";
+import { updateUserAsync } from "../features/user/userSlice";
 import {
   addUserCurrentOrder,
   createOrderAsync,
@@ -15,6 +15,7 @@ export default function CheckoutPage() {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
   const user = useSelector((state) => state.user.userInfo);
+  console.log(user);
   const currentOrder = useSelector((state) => state.order.currentOrder);
   const {
     register,
@@ -24,15 +25,15 @@ export default function CheckoutPage() {
   } = useForm();
 
   const totalAmountBeforeDiscount = items.reduce(
-    (amount, item) => item.price * item.quantity + amount,
+    (amount, item) => item.product.price * item.quantity + amount,
     0
   );
 
   const totalDiscount = items.reduce((total, item) => {
     const itemActualPrice = Math.round(
-      item.price * (1 - item.discountPercentage / 100)
+      item.product.price * (1 - item.product.discountPercentage / 100)
     );
-    const discountedPrice = item.price - itemActualPrice;
+    const discountedPrice = item.product.price - itemActualPrice;
     const itemTotalDiscount = discountedPrice * item.quantity;
     return total + itemTotalDiscount;
   }, 0);
@@ -59,7 +60,7 @@ export default function CheckoutPage() {
         items,
         totalAmountAfterDiscount,
         totalItemsInCart,
-        user,
+        user: user.id,
         selectedAddress,
         status: "pending",
       };
@@ -395,39 +396,41 @@ export default function CheckoutPage() {
             <div className="bg-gray-100 px-5 py-6 md:px-8">
               <div className="flow-root">
                 <ul className="-my-7 divide-y divide-gray-200">
-                  {items.map((product) => (
+                  {items.map((item) => (
                     <li
-                      key={product.id}
+                      key={item.product.id}
                       className="flex items-stretch justify-between space-x-5 py-7"
                     >
                       <div className="flex flex-1 items-stretch">
                         <div className="flex-shrink-0">
                           <img
                             className="h-20 w-20 rounded-lg border border-gray-200 bg-white object-cover object-center"
-                            src={product.thumbnail}
-                            alt={product.title}
+                            src={item.product.thumbnail}
+                            alt={item.product.title}
                           />
                         </div>
                         <div className="ml-5 flex flex-col justify-between">
                           <div className="flex-1">
-                            <p className="text-sm font-bold">{product.title}</p>
+                            <p className="text-sm font-bold">
+                              {item.product.title}
+                            </p>
                             <p className="mt-1.5 text-sm font-medium text-gray-500">
-                              {product.brand}
+                              {item.product.brand}
                             </p>
                           </div>
                           <p className="mt-4 text-xs font-medium ">
-                            x {product.quantity}
+                            x {item.quantity}
                           </p>
                         </div>
                       </div>
                       <div className="ml-auto flex flex-col items-end justify-between">
                         <p className="text-right text-sm font-bold text-gray-900">
-                          ₹{product.price}
+                          ₹{item.product.price}
                         </p>
                         <button
                           type="button"
                           className="-m-2 inline-flex rounded p-2 text-gray-400 transition-all duration-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-                          onClick={() => handleRemove(product.id)}
+                          onClick={() => handleRemove(item.id)}
                         >
                           <span className="sr-only">Remove</span>
                           <X className="h-5 w-5" />
