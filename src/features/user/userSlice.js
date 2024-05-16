@@ -10,7 +10,7 @@ const initialState = {
   userInfo: null,
 };
 
-export const fetchLoggedInUserOrderAsync = createAsyncThunk(
+export const fetchLoggedInUserOrdersAsync = createAsyncThunk(
   "user/fetchLoggedInUserOrders",
   async (id) => {
     const response = await fetchLoggedInUserOrders(id);
@@ -42,10 +42,10 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchLoggedInUserOrderAsync.pending, (state) => {
+      .addCase(fetchLoggedInUserOrdersAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchLoggedInUserOrderAsync.fulfilled, (state, action) => {
+      .addCase(fetchLoggedInUserOrdersAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.userInfo.orders = action.payload;
       })

@@ -15,7 +15,6 @@ export default function CheckoutPage() {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
   const user = useSelector((state) => state.user.userInfo);
-  console.log(user);
   const currentOrder = useSelector((state) => state.order.currentOrder);
   const {
     register,
