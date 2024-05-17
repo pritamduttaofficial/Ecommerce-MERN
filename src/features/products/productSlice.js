@@ -57,9 +57,9 @@ export const updateProductAsync = createAsyncThunk(
 );
 export const deleteProductAsync = createAsyncThunk(
   "product/delete",
-  async (update) => {
-    const response = await deleteProduct(update);
-    return response.data;
+  async (productId) => {
+    const response = await deleteProduct(productId);
+    return response;
   }
 );
 
@@ -120,7 +120,9 @@ const productSlice = createSlice({
         const index = state.products.findIndex(
           (product) => product.id === action.payload.id
         );
-        state.products.splice(index, 1);
+        if (index !== -1) {
+          state.products.splice(index, 1);
+        }
       });
   },
 });

@@ -4,11 +4,11 @@ import {
   createProductAsync,
   fetchProductByIdAsync,
   updateProductAsync,
+  deleteProductAsync,
 } from "../../products/productSlice";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { deleteProduct } from "../../products/productApi";
 
 function ProductForm() {
   const {
@@ -18,7 +18,7 @@ function ProductForm() {
     reset,
     formState: { errors },
   } = useForm();
-  const categories = useSelector((state) => state.product.category);
+  const categories = useSelector((state) => state.product.categories);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
@@ -49,10 +49,7 @@ function ProductForm() {
   }, [selectedProduct, params.id, setValue]);
 
   const handleDelete = () => {
-    // const product = { ...selectedProduct };
-    // product.deleted = true;
-    // dispatch(updateProductAsync(product));
-    dispatch(deleteProduct(selectedProduct.id));
+    dispatch(deleteProductAsync(selectedProduct.id));
     navigate("/admin");
   };
 

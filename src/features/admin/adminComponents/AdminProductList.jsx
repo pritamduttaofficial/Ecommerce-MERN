@@ -33,9 +33,8 @@ function classNames(...classes) {
 export default function AdminProductList() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product.products);
-  const category = useSelector((state) => state.product.category);
-  // const totalItems = useSelector((state) => state.product.totalItems);
-  const totalItems = 100;
+  const categories = useSelector((state) => state.product.categories);
+  const totalItems = useSelector((state) => state.product.totalItems);
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
   const [filter, setFilter] = useState({});
@@ -46,7 +45,7 @@ export default function AdminProductList() {
     {
       id: "category",
       name: "Category",
-      options: category,
+      options: categories,
     },
   ];
 

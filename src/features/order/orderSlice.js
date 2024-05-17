@@ -20,16 +20,15 @@ export const updateOrderAsync = createAsyncThunk(
   "order/updateOrder",
   async (order) => {
     const response = await updateOrder(order);
-    // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );
 
+// API for admin
 export const fetchAllOrdersAsync = createAsyncThunk(
   "order/fetchAllOrders",
-  async ({ filter }) => {
+  async (filter) => {
     const response = await fetchAllOrders(filter);
-    // The value we return becomes the `fulfilled` action payload
     return response.data;
   }
 );

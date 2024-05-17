@@ -74,16 +74,13 @@ export function updateProduct(update) {
   });
 }
 
+// productApi.js
 export function deleteProduct(productId) {
   return new Promise(async (resolve) => {
-    const response = await fetch(
-      "http://localhost:8000/products/" + productId,
-      {
-        method: "DELETE",
-        headers: { "content-type": "application/json" },
-      }
-    );
-    const data = await response.json();
-    resolve({ data: { id: itemId } });
+    await fetch("http://localhost:8000/products/" + productId, {
+      method: "DELETE",
+      headers: { "content-type": "application/json" },
+    });
+    resolve({ id: productId });
   });
 }

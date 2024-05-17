@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllOrdersAsync, updateOrderAsync } from "../../order/orderSlice";
-import {
-  PencilIcon,
-  EyeIcon,
-  ArrowUpIcon,
-  ArrowDownIcon,
-} from "@heroicons/react/24/outline";
+import { PencilIcon, EyeIcon } from "@heroicons/react/24/outline";
 
 function AdminOrders() {
   const dispatch = useDispatch();
@@ -33,7 +28,7 @@ function AdminOrders() {
   };
 
   useEffect(() => {
-    dispatch(fetchAllOrdersAsync({ filter }));
+    dispatch(fetchAllOrdersAsync({ status: filter }));
   }, [dispatch, filter]);
 
   const chooseColor = (status) => {
@@ -97,17 +92,17 @@ function AdminOrders() {
                           <div className="mr-1">
                             <img
                               className="h-20 w-20 rounded-lg border border-gray-200 object-cover object-center"
-                              src={item.thumbnail}
-                              alt={item.title}
+                              src={item.product.thumbnail}
+                              alt={item.product.title}
                             />
                           </div>
                           <div className="ml-5 flex flex-col justify-between">
                             <div className="flex-1">
                               <p className="text-sm font-bold text-gray-900">
-                                {item.title}
+                                {item.product.title}
                               </p>
                               <p className=" text-sm font-normal text-gray-500">
-                                {item.brand}
+                                {item.product.brand}
                               </p>
                               <p className=" text-sm font-normal text-gray-500">
                                 x {item.quantity}
@@ -115,8 +110,8 @@ function AdminOrders() {
                               <p className=" text-sm font-normal text-gray-500">
                                 ₹{" "}
                                 {Math.round(
-                                  item.price *
-                                    (1 - item.discountPercentage / 100)
+                                  item.product.price *
+                                    (1 - item.product.discountPercentage / 100)
                                 )}
                               </p>
                             </div>
@@ -133,12 +128,12 @@ function AdminOrders() {
                     </td>
                     <td className="py-3 px-6 text-center">
                       <div className="ml-5 flex flex-col font-medium justify-center items-start">
-                        <div>{order.selectedAddress.name},</div>
-                        <div>{order.selectedAddress.address},</div>
-                        <div>{order.selectedAddress.city}, </div>
-                        <div>{order.selectedAddress.state}, </div>
-                        <div>{order.selectedAddress.pinCode}, </div>
-                        <div>{order.selectedAddress.phone} </div>
+                        <div>{order.selectedAddress[0].name},</div>
+                        <div>{order.selectedAddress[0].address},</div>
+                        <div>{order.selectedAddress[0].city}, </div>
+                        <div>{order.selectedAddress[0].state}, </div>
+                        <div>{order.selectedAddress[0].pincode}, </div>
+                        <div>{order.selectedAddress[0].phone} </div>
                       </div>
                     </td>
                     <td className="py-3 px-6 text-center">
